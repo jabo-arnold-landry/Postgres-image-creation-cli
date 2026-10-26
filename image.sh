@@ -6,8 +6,7 @@ if [[  -s docker-compose.yml ]]
     exit 0
  fi
 
-# database fields correction
-
+# database credentials
 if [[ -z $1 ]]; then
     read -p 'DataBase-name(*): ' db
  else
@@ -32,10 +31,6 @@ if [[ -z $user ]]
         exit 1
 fi
 
-read -p 'Container-name: ' container_name
-read -p 'Container-port(if omitted, the container will use default postgresql default port of 5432): ' port
-read -p 'Volume-name: ' vol_name
-
 if [[ -z $1 ]]; then
     read -sp 'DataBase-password(*): ' pwd
  else
@@ -48,6 +43,14 @@ if [[ -z $pwd ]]
         exit 1
 fi
 
+echo
+
+# container information
+read -p 'Container-name: ' container_name
+read -p 'Container-port(if omitted, the container will use default postgresql default port of 5432): ' port
+read -p 'Volume-name: ' vol_name
+
+
 #file creation and writing
  >  docker-compose.yml
 
@@ -58,9 +61,9 @@ cat<<EOF>>docker-compose.yml
         container_name: ${container_name:= $db}
 
         environment:
+            POSTGRES_database: $db
             POSTGRES_USER: $user
             POSTGRES_PASSWORD: $pwd
-            POSTGRES_database: $db
 
         ports:
             - ${port:=5432}:5432
