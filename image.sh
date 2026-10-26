@@ -7,14 +7,25 @@ if [[  -s docker-compose.yml ]]
  fi
 
 # database fields correction
-read -p 'DataBase-name(*): ' db
+
+if [[ -z $1 ]]; then
+    read -p 'DataBase-name(*): ' db
+ else
+    db="$1"
+fi
+
 if [[ -z $db ]]
     then
         echo "The database field cannot be empty!"
         exit 1
 fi
 
-read -p 'DataBase-user(*): ' user
+if [[ -z $2 ]]; then
+    read -p 'DataBase-user(*): ' user
+ else
+    user="$2"
+fi
+
 if [[ -z $user ]]
     then
         echo "The user field cannot be empty!"
@@ -25,7 +36,12 @@ read -p 'Container-name: ' container_name
 read -p 'Container-port(if omitted, the container will use default postgresql default port of 5432): ' port
 read -p 'Volume-name: ' vol_name
 
-read -sp 'DataBase-password(*): ' pwd
+if [[ -z $1 ]]; then
+    read -sp 'DataBase-password(*): ' pwd
+ else
+    pwd=$3
+fi
+
 if [[ -z $pwd ]]
     then
         echo "The password field cannot be empty!"
