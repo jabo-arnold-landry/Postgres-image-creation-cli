@@ -16,6 +16,8 @@ while getopts 'D' option; do
     esac
 done
 
+shift $((OPTIND - 1))
+
 # database credentials
 if [[ -z $1 ]]; then
     read -p 'DataBase-name(*): ' db
@@ -41,7 +43,7 @@ if [[ -z $user ]]
         exit 1
 fi
 
-if [[ -z $1 ]]; then
+if [[ -z $3 ]]; then
     read -sp 'DataBase-password(*): ' pwd
  else
     pwd=$3
